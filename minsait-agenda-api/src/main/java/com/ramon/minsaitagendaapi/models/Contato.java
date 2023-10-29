@@ -1,5 +1,7 @@
 package com.ramon.minsaitagendaapi.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ramon.minsaitagendaapi.enums.TipoContato;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,5 +31,7 @@ public class Contato {
 
     @ManyToOne
     @JoinColumn(name = "pessoa_id", nullable = false)
+    @JsonIgnore
     private Pessoa pessoa;
+
 }

@@ -1,7 +1,9 @@
 package com.ramon.minsaitagendaapi.controllers;
 
 import com.ramon.minsaitagendaapi.exception.RegraNegocioException;
+import com.ramon.minsaitagendaapi.models.Contato;
 import com.ramon.minsaitagendaapi.models.Pessoa;
+import com.ramon.minsaitagendaapi.repositories.ContatoRepository;
 import com.ramon.minsaitagendaapi.services.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class PessoaController {
 
     @Autowired
     private PessoaService service;
+    @Autowired
+    private ContatoRepository contatoRepository;
+
 
     @PostMapping
     public ResponseEntity criarPessoa(@RequestBody Pessoa pessoa) {
@@ -57,7 +62,7 @@ public class PessoaController {
         return ResponseEntity.ok(pessoas);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/contatos")
     public ResponseEntity<?> atualizarPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa){
 
         try {
@@ -84,5 +89,20 @@ public class PessoaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao deletar pessoa, o ID não existe!");
         }
     }
+
+    @PostMapping("/{id}/contatos")
+    public ResponseEntity<Contato> adicionarContato(@PathVariable Long id, @RequestBody Contato novoContato) {
+        Optional<Pessoa> pessoaOptional = service.getByPessoaId(id);
+        if (pessoaOptional.isPresent()) {
+            Pessoa pessoa = pessoaOptional.get();
+            novoContato.setPessoa(pessoa);
+            Contato contatoSalvo = contatoRepository.save(novoContato);
+            return ResponseEntity.status(HttpStatus.CREATED).body(contatoSalvo);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
 
 }

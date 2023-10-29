@@ -1,5 +1,7 @@
 package com.ramon.minsaitagendaapi.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +32,7 @@ public class Pessoa {
     private String uf;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Contato> contatos;
+
 }
