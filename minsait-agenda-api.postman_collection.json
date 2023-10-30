@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "c0549d12-cc62-4231-a343-80269cb05eb9",
+		"name": "minsait-agenda-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18967945"
+	},
+	"item": [
+		{
+			"name": "Pessoa",
+			"item": [
+				{
+					"name": "criarPessoa",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "listarPessoas",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "obterPessoaPorId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarPessoa",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Novo Nome Editado 1\",\r\n    \"endereco\": \"Novo Endereço Editado 1\",\r\n    \"cep\": \"Novo CEP Editado 1\",\r\n    \"cidade\": \"Nova Cidade Editada 1 \",\r\n    \"uf\": \"Nova UF Editada 1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluirPessoa",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "adicionarContato",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getPessoaParaMalaDireta",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contato",
+			"item": [
+				{
+					"name": "getContatoById",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "listarContatosDaPessoa",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarContato",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "deletarContato",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
