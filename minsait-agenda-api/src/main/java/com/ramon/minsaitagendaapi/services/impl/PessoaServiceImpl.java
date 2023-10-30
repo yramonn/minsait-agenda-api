@@ -69,10 +69,35 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public String formatarMalaDireta(Pessoa pessoa) {
-        return pessoa.getEndereco() + " - " +
-                pessoa.getCep() + ", - " +
-                pessoa.getCidade() + " / " +
-                pessoa.getUf();
+        StringBuilder enderecoFormatado = new StringBuilder();
+
+        if (pessoa.getEndereco() != null && !pessoa.getEndereco().isEmpty()) {
+            enderecoFormatado.append(pessoa.getEndereco());
+        }
+
+        if (pessoa.getCep() != null && !pessoa.getCep().isEmpty()) {
+            if (enderecoFormatado.length() > 0) {
+                enderecoFormatado.append(" - ");
+            }
+            enderecoFormatado.append(pessoa.getCep());
+        }
+
+        if (pessoa.getCidade() != null && !pessoa.getCidade().isEmpty()) {
+            if (enderecoFormatado.length() > 0) {
+                enderecoFormatado.append(", ");
+            }
+            enderecoFormatado.append(pessoa.getCidade());
+        }
+
+        if (pessoa.getUf() != null && !pessoa.getUf().isEmpty()) {
+            if (enderecoFormatado.length() > 0) {
+                enderecoFormatado.append(" / ");
+            }
+            enderecoFormatado.append(pessoa.getUf());
+        }
+
+        return enderecoFormatado.toString();
     }
+
 
 }
