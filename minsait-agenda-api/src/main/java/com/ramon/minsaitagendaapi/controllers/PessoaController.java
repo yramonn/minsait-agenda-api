@@ -1,10 +1,12 @@
 package com.ramon.minsaitagendaapi.controllers;
 
+import com.ramon.minsaitagendaapi.dto.PessoaMalaDiretaDTO;
 import com.ramon.minsaitagendaapi.exception.RegraNegocioException;
 import com.ramon.minsaitagendaapi.models.Contato;
 import com.ramon.minsaitagendaapi.models.Pessoa;
 import com.ramon.minsaitagendaapi.repositories.ContatoRepository;
 import com.ramon.minsaitagendaapi.services.PessoaService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ public class PessoaController {
 
 
     @PostMapping
+    @Operation(summary = "Cria uma nova Pessoa")
     public ResponseEntity criarPessoa(@RequestBody Pessoa pessoa) {
 
         try {
@@ -38,6 +41,7 @@ public class PessoaController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Retorna os dados de uma Pessoa por ID")
     public ResponseEntity<?> obterPessoaPorId(@PathVariable Long id) {
         try {
             Optional<Pessoa> pessoa = service.getByPessoaId(id);
@@ -55,6 +59,7 @@ public class PessoaController {
     }
 
     @GetMapping
+    @Operation(summary = "Lista todas as Pessoas")
     public ResponseEntity<List<Pessoa>> listarPessoas(){
         List<Pessoa> pessoas = service.getAllPessoas();
         if(pessoas == null || pessoas.isEmpty())
@@ -62,35 +67,35 @@ public class PessoaController {
         return ResponseEntity.ok(pessoas);
     }
 
-    @PutMapping("/{id}/contatos")
-    public ResponseEntity<?> atualizarPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa){
-
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualiza uma Pessoa existente")
+    public ResponseEntity<?> atualizarPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
         try {
-            Optional<Pessoa> novaPessoa = service.getByPessoaId(id);
-            if (novaPessoa  == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Pessoa não encontrada para o ID: " + id);
-            }
-            service.atualizarPessoa(pessoa);
+            service.atualizarPessoa(id, pessoa);
             return ResponseEntity.ok("Pessoa atualizada com sucesso.");
-
         } catch (RegraNegocioException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao atualizar a pessoa para o ID: " + id);
+        }
     }
- }
+
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Remove uma Pessoa por ID")
     public ResponseEntity<String> excluirPessoa(@PathVariable Long id) {
         try {
             service.excluirPessoa(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Pessoa deletada com sucesso.");
+            return ResponseEntity.status(HttpStatus.OK).body("Pessoa deletada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao deletar pessoa, o ID não existe!");
         }
     }
 
     @PostMapping("/{id}/contatos")
+    @Operation(summary = "Adiciona um novo Contato a uma Pessoa")
     public ResponseEntity<Contato> adicionarContato(@PathVariable Long id, @RequestBody Contato novoContato) {
         Optional<Pessoa> pessoaOptional = service.getByPessoaId(id);
         if (pessoaOptional.isPresent()) {
@@ -103,6 +108,37 @@ public class PessoaController {
         }
     }
 
+    @GetMapping("/{idPessoa}/contatos")
+    @Operation(summary = "Lista todos os Contatos de uma Pessoa")
+    public ResponseEntity<?> listarContatosDaPessoa(@PathVariable Long idPessoa) {
+        List<Contato> contatos = contatoRepository.findByPessoaId(idPessoa);
 
+        if (contatos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Nenhum contato encontrado para o ID da pessoa: " + idPessoa);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(contatos);
+        }
+    }
+
+    @GetMapping("maladireta/{id}")
+    @Operation(summary = "Retorna os dados de uma Pessoa por ID para mala direta")
+    public ResponseEntity<?> getPessoaParaMalaDireta(@PathVariable Long id) {
+        try {
+            Optional<Pessoa> pessoaOptional = service.getByPessoaId(id);
+            if (pessoaOptional.isPresent()) {
+                Pessoa pessoa = pessoaOptional.get();
+                String enderecoCompleto = service.formatarMalaDireta(pessoa);
+                PessoaMalaDiretaDTO pessoaMalaDiretaDTO = new PessoaMalaDiretaDTO(id, pessoa.getNome(), enderecoCompleto);
+                return ResponseEntity.status(HttpStatus.OK).body(pessoaMalaDiretaDTO);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Pessoa não encontrada para o ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao buscar a pessoa para o ID: " + id);
+        }
+    }
 
 }

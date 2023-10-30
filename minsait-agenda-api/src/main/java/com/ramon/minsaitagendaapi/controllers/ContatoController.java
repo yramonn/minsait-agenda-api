@@ -1,16 +1,13 @@
 package com.ramon.minsaitagendaapi.controllers;
 
 import com.ramon.minsaitagendaapi.models.Contato;
-import com.ramon.minsaitagendaapi.models.Pessoa;
 import com.ramon.minsaitagendaapi.repositories.ContatoRepository;
-import com.ramon.minsaitagendaapi.repositories.PessoaRepository;
-import com.ramon.minsaitagendaapi.services.ContatoService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,10 +17,9 @@ public class ContatoController {
 
     @Autowired
     ContatoRepository contatoRepository;
-    PessoaRepository pessoaRepository;
-
 
     @GetMapping("/{id}")
+    @Operation(summary = "Retorna os dados de um Contato por ID")
     public ResponseEntity<?> getContatoById(@PathVariable Long id) {
         Optional<Contato> contatoOptional = contatoRepository.findById(id);
 
@@ -36,19 +32,8 @@ public class ContatoController {
         }
     }
 
-    @GetMapping("/{idPessoa}/contatos")
-    public ResponseEntity<?> listarContatosDaPessoa(@PathVariable Long idPessoa) {
-        List<Contato> contatos = contatoRepository.findByPessoaId(idPessoa);
-
-        if (contatos.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Nenhum contato encontrado para o ID da pessoa: " + idPessoa);
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(contatos);
-        }
-    }
-
     @PutMapping("/{id}")
+    @Operation(summary = "Atualiza um Contato existente")
     public ResponseEntity<?> atualizarContato(@PathVariable Long id, @RequestBody Contato novoContato) {
         Optional<Contato> contatoExistenteOptional = contatoRepository.findById(id);
 
@@ -66,12 +51,13 @@ public class ContatoController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Remove um Contato por ID")
     public ResponseEntity<?> deletarContato(@PathVariable Long id) {
         try {
             boolean existeContato = contatoRepository.existsById(id);
             if (existeContato) {
                 contatoRepository.deleteById(id);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                return ResponseEntity.status(HttpStatus.OK).body("Contato deletado com sucesso.");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Contato não encontrado para o ID: " + id);

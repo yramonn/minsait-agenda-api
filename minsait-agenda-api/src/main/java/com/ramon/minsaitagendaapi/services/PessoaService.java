@@ -15,7 +15,9 @@ public interface PessoaService {
 
     void validarPessoa(Pessoa usuario);
 
-    void atualizarPessoa(Pessoa usuarioExistente);
+    void atualizarPessoa(Long id, Pessoa pessoaAtualizada);
 
     void excluirPessoa(Long id);
+
+     String formatarMalaDireta(Pessoa pessoa);
 }

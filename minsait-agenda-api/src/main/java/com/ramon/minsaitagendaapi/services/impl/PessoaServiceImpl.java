@@ -33,39 +33,23 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
 
-//    @Override
-//    public void Pessoa atualizarPessoa(Pessoa pessoaAtualizada) {
-//
-//        Optional<Pessoa> pessoaExistente = repository.findById(pessoaAtualizada.getId());
-//
-//        if(pessoaExistente.isPresent()) {
-//            Pessoa novaPessoa = pessoaExistente.get();
-//            novaPessoa.setNome(pessoaAtualizada.getNome());
-//            novaPessoa.setEndereco(pessoaAtualizada.getEndereco());
-//            novaPessoa.setCep(pessoaAtualizada.getCep());
-//            novaPessoa.setCidade(pessoaAtualizada.getCidade());
-//            novaPessoa.setUf(pessoaAtualizada.getUf());
-//
-//            return repository.save(novaPessoa);
-//        }
-//        return pessoaAtualizada;
-//    }
-
     @Override
-    public void  atualizarPessoa(Pessoa pessoaAtualizada) throws RegraNegocioException {
+    public void atualizarPessoa(Long id, Pessoa pessoaAtualizada) {
+        Optional<Pessoa> pessoaExistenteOptional = repository.findById(id);
 
-        Pessoa pessoaExistente = repository.findById(pessoaAtualizada.getId()).orElse(null);
+        if (pessoaExistenteOptional.isPresent()) {
+            Pessoa pessoaExistente = pessoaExistenteOptional.get();
 
-        if (pessoaExistente == null) {
-            throw new RegraNegocioException("Pessoa não encontrada para o ID: " + pessoaAtualizada.getId());
+            pessoaExistente.setNome(pessoaAtualizada.getNome());
+            pessoaExistente.setEndereco(pessoaAtualizada.getEndereco());
+            pessoaExistente.setCep(pessoaAtualizada.getCep());
+            pessoaExistente.setCidade(pessoaAtualizada.getCidade());
+            pessoaExistente.setUf(pessoaAtualizada.getUf());
+
+            repository.save(pessoaExistente);
+        } else {
+            throw new RegraNegocioException("Pessoa não encontrada para o ID: " + id);
         }
-        pessoaExistente.setNome(pessoaAtualizada.getNome());
-        pessoaExistente.setEndereco(pessoaAtualizada.getEndereco());
-        pessoaExistente.setCep(pessoaAtualizada.getCep());
-        pessoaExistente.setCidade(pessoaAtualizada.getCidade());
-        pessoaExistente.setUf(pessoaAtualizada.getUf());
-
-             repository.save(pessoaExistente);
     }
 
 
@@ -76,12 +60,19 @@ public class PessoaServiceImpl implements PessoaService {
         repository.delete(pessoa);
     }
 
-
     @Override
     public void validarPessoa(Pessoa pessoa) {
         if (pessoa.getNome() == null || pessoa.getNome().trim().isEmpty()) {
             throw new RegraNegocioException("Informe seu Nome");
         }
-
     }
+
+    @Override
+    public String formatarMalaDireta(Pessoa pessoa) {
+        return pessoa.getEndereco() + " - " +
+                pessoa.getCep() + ", - " +
+                pessoa.getCidade() + " / " +
+                pessoa.getUf();
+    }
+
 }
