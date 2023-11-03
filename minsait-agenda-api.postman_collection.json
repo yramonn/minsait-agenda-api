@@ -12,24 +12,94 @@
 				{
 					"name": "criarPessoa",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Eduardo Henrique\",\r\n    \"endereco\": \"Centro\",\r\n    \"cep\": \"06415-987\",\r\n    \"cidade\": \"Belo Horizonte\",\r\n    \"uf\": \"Minas\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "listarPessoas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "obterPessoaPorId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas/19",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas",
+								"19"
+							]
+						}
 					},
 					"response": []
 				},
@@ -40,7 +110,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Novo Nome Editado 1\",\r\n    \"endereco\": \"Novo Endereço Editado 1\",\r\n    \"cep\": \"Novo CEP Editado 1\",\r\n    \"cidade\": \"Nova Cidade Editada 1 \",\r\n    \"uf\": \"Nova UF Editada 1\"\r\n}\r\n",
+							"raw": "{\r\n    \"nome\": \"Eduardo Teste\",\r\n    \"endereco\": \"Avenida TESTE\",\r\n    \"cep\": \"06415-955\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"uf\": \"SP\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -48,7 +118,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/pessoas/1",
+							"raw": "http://localhost:8080/api/pessoas/20",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -57,7 +127,7 @@
 							"path": [
 								"api",
 								"pessoas",
-								"1"
+								"20"
 							]
 						}
 					},
@@ -66,24 +136,95 @@
 				{
 					"name": "excluirPessoa",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas/20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas",
+								"20"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "adicionarContato",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipoContato\": \"1\",      // 0 para Telefone, 1 para Celular\r\n  \"contato\": \"(63)98222-0476\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas/19/contatos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas",
+								"19",
+								"contatos"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "getPessoaParaMalaDireta",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas/maladireta/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas",
+								"maladireta",
+								"10"
+							]
+						}
 					},
 					"response": []
 				}
@@ -94,33 +235,128 @@
 			"item": [
 				{
 					"name": "getContatoById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contatos/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contatos",
+								"14"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "listarContatosDaPessoa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pessoas/20/contatos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pessoas",
+								"20",
+								"contatos"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "atualizarContato",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"tipoContato\": \"0\", // 0 para Telefone, 1 para Celular\r\n    \"contato\": \"11983869307\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contatos/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contatos",
+								"12"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "deletarContato",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contatos/20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contatos",
+								"20"
+							]
+						}
 					},
 					"response": []
 				}
