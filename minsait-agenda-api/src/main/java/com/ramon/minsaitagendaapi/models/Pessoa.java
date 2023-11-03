@@ -26,8 +26,13 @@ public class Pessoa {
     private String nome;
 
     private String endereco;
+
+    @Column(length = 9)
     private String cep;
+
     private String cidade;
+
+    @Column(length = 2)
     private String uf;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)

@@ -3,6 +3,7 @@ package com.ramon.minsaitagendaapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ramon.minsaitagendaapi.enums.TipoContato;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Contato {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TipoContato tipoContato; // Enum: TELEFONE ou CELULAR
+    private TipoContato tipoContato;
 
     @Column(nullable = false)
     private String contato;

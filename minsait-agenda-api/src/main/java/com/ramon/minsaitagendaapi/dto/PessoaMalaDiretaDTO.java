@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class PessoaMalaDiretaDTO {
     private Long id;
     private String nome;
-    private String enderecoCompleto;
+    private String malaDireta;
 
 }

@@ -23,8 +23,11 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public Optional<Pessoa> getByPessoaId(Long id) {
-        return repository.findById(id);
-
+        Optional<Pessoa> pessoaOptional = repository.findById(id);
+        if (!pessoaOptional.isPresent()) {
+            throw new RegraNegocioException("Pessoa não encontrada com o ID: " + id);
+        }
+        return pessoaOptional;
     }
 
     @Override
@@ -65,38 +68,46 @@ public class PessoaServiceImpl implements PessoaService {
         if (pessoa.getNome() == null || pessoa.getNome().trim().isEmpty()) {
             throw new RegraNegocioException("Informe seu Nome");
         }
+
+        if (pessoa.getCep() != null && pessoa.getCep().length() != 9) {
+            throw new RegraNegocioException("CEP Errado! O formato do CEP deve ser exatamente (00000-000)");
+        }
+
+        if (pessoa.getUf() != null && pessoa.getUf().length() != 2) {
+            throw new RegraNegocioException("A UF deve ter exatamente 2 caracteres");
+        }
     }
 
     @Override
     public String formatarMalaDireta(Pessoa pessoa) {
-        StringBuilder enderecoFormatado = new StringBuilder();
+        StringBuilder malaDireta = new StringBuilder();
 
         if (pessoa.getEndereco() != null && !pessoa.getEndereco().isEmpty()) {
-            enderecoFormatado.append(pessoa.getEndereco());
+            malaDireta.append(pessoa.getEndereco());
         }
 
-        if (pessoa.getCep() != null && !pessoa.getCep().isEmpty()) {
-            if (enderecoFormatado.length() > 0) {
-                enderecoFormatado.append(" - ");
+         if (pessoa.getCep() != null && !pessoa.getCep().isEmpty()) {
+            if (malaDireta.length() > 0) {
+                malaDireta.append(" - ");
             }
-            enderecoFormatado.append(pessoa.getCep());
+             malaDireta.append(pessoa.getCep());
         }
 
         if (pessoa.getCidade() != null && !pessoa.getCidade().isEmpty()) {
-            if (enderecoFormatado.length() > 0) {
-                enderecoFormatado.append(", ");
+            if (malaDireta.length() > 0) {
+                malaDireta.append(", ");
             }
-            enderecoFormatado.append(pessoa.getCidade());
+            malaDireta.append(pessoa.getCidade());
         }
 
         if (pessoa.getUf() != null && !pessoa.getUf().isEmpty()) {
-            if (enderecoFormatado.length() > 0) {
-                enderecoFormatado.append(" / ");
+            if (malaDireta.length() > 0) {
+                malaDireta.append(" / ");
             }
-            enderecoFormatado.append(pessoa.getUf());
+            malaDireta.append(pessoa.getUf());
         }
 
-        return enderecoFormatado.toString();
+        return malaDireta.toString();
     }
 
 

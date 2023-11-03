@@ -5,6 +5,7 @@ import com.ramon.minsaitagendaapi.exception.RegraNegocioException;
 import com.ramon.minsaitagendaapi.models.Contato;
 import com.ramon.minsaitagendaapi.models.Pessoa;
 import com.ramon.minsaitagendaapi.repositories.ContatoRepository;
+import com.ramon.minsaitagendaapi.services.ContatoService;
 import com.ramon.minsaitagendaapi.services.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,13 @@ public class PessoaController {
 
     @Autowired
     private PessoaService service;
+
     @Autowired
     private ContatoRepository contatoRepository;
+
+    @Autowired
+    private ContatoService contatoService;
+
 
 
     @PostMapping
@@ -31,8 +37,8 @@ public class PessoaController {
     public ResponseEntity criarPessoa(@RequestBody Pessoa pessoa) {
 
         try {
-            Pessoa novaPessoa = service.criarPessoa(pessoa);
             service.validarPessoa(pessoa);
+            Pessoa novaPessoa = service.criarPessoa(pessoa);
             return new ResponseEntity(novaPessoa, HttpStatus.CREATED);
 
         } catch (RegraNegocioException e) {
@@ -101,6 +107,7 @@ public class PessoaController {
         if (pessoaOptional.isPresent()) {
             Pessoa pessoa = pessoaOptional.get();
             novoContato.setPessoa(pessoa);
+            contatoService.validarContato(novoContato);
             Contato contatoSalvo = contatoRepository.save(novoContato);
             return ResponseEntity.status(HttpStatus.CREATED).body(contatoSalvo);
         } else {
@@ -128,8 +135,8 @@ public class PessoaController {
             Optional<Pessoa> pessoaOptional = service.getByPessoaId(id);
             if (pessoaOptional.isPresent()) {
                 Pessoa pessoa = pessoaOptional.get();
-                String enderecoCompleto = service.formatarMalaDireta(pessoa);
-                PessoaMalaDiretaDTO pessoaMalaDiretaDTO = new PessoaMalaDiretaDTO(id, pessoa.getNome(), enderecoCompleto);
+                String malaDireta = service.formatarMalaDireta(pessoa);
+                PessoaMalaDiretaDTO pessoaMalaDiretaDTO = new PessoaMalaDiretaDTO(id, pessoa.getNome(), malaDireta);
                 return ResponseEntity.status(HttpStatus.OK).body(pessoaMalaDiretaDTO);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
